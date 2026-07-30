@@ -718,21 +718,40 @@
     window.navigateToPage('portal');
   };
 
+  window.isUserLoggedIn = function() {
+    try {
+      var raw = localStorage.getItem('verix_user_session');
+      if (!raw) return false;
+      var session = JSON.parse(raw);
+      return !!(session && session.isLoggedIn);
+    } catch(e) {
+      return false;
+    }
+  };
+
   window.updateUserSessionUI = function(session) {
     var loggedOutView = document.getElementById('portalLoggedOutView');
     var loggedInView = document.getElementById('portalLoggedInView');
     var userChip = document.getElementById('headerUserChip');
     var headerName = document.getElementById('headerUserName');
     var getStartedBtn = document.getElementById('getStartedHeaderBtn');
+    var getStartedMobileBtn = document.getElementById('getStartedMobileBtn');
     var portalName = document.getElementById('portalUserName');
     var portalRole = document.getElementById('portalUserRole');
     var portalAvatar = document.getElementById('portalAvatar');
 
-    if (session && session.isLoggedIn) {
+    var isLoggedIn = session && session.isLoggedIn;
+
+    if (isLoggedIn) {
       if (loggedOutView) loggedOutView.classList.add('d-none');
       if (loggedInView) loggedInView.classList.remove('d-none');
       if (userChip) { userChip.classList.remove('d-none'); userChip.classList.add('d-flex'); }
       if (getStartedBtn) getStartedBtn.classList.add('d-none');
+      if (getStartedMobileBtn) getStartedMobileBtn.classList.add('d-none');
+
+      var allGetStarted = document.querySelectorAll('.get-started-btn');
+      allGetStarted.forEach(function(btn) { btn.classList.add('d-none'); });
+
       if (headerName) headerName.textContent = session.name.split(' ')[0];
       if (portalName) portalName.textContent = session.name;
       if (portalRole) portalRole.textContent = '✓ Verified ' + (session.role || 'Executive');
@@ -742,6 +761,10 @@
       if (loggedInView) loggedInView.classList.add('d-none');
       if (userChip) { userChip.classList.remove('d-flex'); userChip.classList.add('d-none'); }
       if (getStartedBtn) getStartedBtn.classList.remove('d-none');
+      if (getStartedMobileBtn) getStartedMobileBtn.classList.remove('d-none');
+
+      var allGetStarted = document.querySelectorAll('.get-started-btn');
+      allGetStarted.forEach(function(btn) { btn.classList.remove('d-none'); });
     }
   };
 
@@ -760,6 +783,12 @@
   var activePaymentMethod = 'card';
 
   window.openPaymentModal = function() {
+    if (!window.isUserLoggedIn()) {
+      showToast('Please login or register to complete your purchase.', 'error');
+      window.openAuthModal('login');
+      return;
+    }
+
     var backdrop = document.getElementById('cartDrawerBackdrop');
     if (backdrop && backdrop.classList.contains('active')) {
       backdrop.classList.remove('active');
@@ -1368,6 +1397,12 @@
   };
 
   window.buyNowFromDetail = function() {
+    if (!window.isUserLoggedIn()) {
+      window.closeProductDetailModal();
+      showToast('Please login or register to complete your purchase.', 'error');
+      window.openAuthModal('login');
+      return;
+    }
     if (!activeDetailProductId) return;
     var p = VERIX_CATALOG[activeDetailProductId];
     if (!p) return;
@@ -1787,6 +1822,12 @@
   };
 
   window.verifyProduct = function(serialCode) {
+    if (!window.isUserLoggedIn()) {
+      showToast('Authentication required: Please login or register to verify product authenticity.', 'error');
+      window.openAuthModal('login');
+      return;
+    }
+
     var rawCode = (serialCode || '').trim().toUpperCase();
     if (!rawCode) {
       showToast('Please enter a valid product serial code.', 'error');
