@@ -425,6 +425,16 @@
     var validPages = ['home', 'categories', 'verify', 'orders', 'portal', 'reviews'];
     if (validPages.indexOf(pageId) === -1) pageId = 'home';
 
+    // Authentication gate for protected pages
+    if ((pageId === 'verify' || pageId === 'orders' || pageId === 'portal') && !window.isUserLoggedIn()) {
+      var msg = pageId === 'verify' 
+        ? 'Authentication required: Please login or register to perform product verification.' 
+        : 'Please login or register to access ' + pageId.charAt(0).toUpperCase() + pageId.slice(1) + '.';
+      showToast(msg, 'error');
+      window.openAuthModal('login');
+      return;
+    }
+
     validPages.forEach(function(p) {
       var el = document.getElementById('page-' + p);
       if (el) {
@@ -743,28 +753,52 @@
     var isLoggedIn = session && session.isLoggedIn;
 
     if (isLoggedIn) {
-      if (loggedOutView) loggedOutView.classList.add('d-none');
-      if (loggedInView) loggedInView.classList.remove('d-none');
-      if (userChip) { userChip.classList.remove('d-none'); userChip.classList.add('d-flex'); }
-      if (getStartedBtn) getStartedBtn.classList.add('d-none');
-      if (getStartedMobileBtn) getStartedMobileBtn.classList.add('d-none');
+      if (loggedOutView) loggedOutView.style.setProperty('display', 'none', 'important');
+      if (loggedInView) loggedInView.style.setProperty('display', 'block', 'important');
+      if (userChip) {
+        userChip.style.setProperty('display', 'flex', 'important');
+        userChip.classList.remove('d-none');
+      }
+      if (getStartedBtn) {
+        getStartedBtn.style.setProperty('display', 'none', 'important');
+        getStartedBtn.classList.add('d-none');
+      }
+      if (getStartedMobileBtn) {
+        getStartedMobileBtn.style.setProperty('display', 'none', 'important');
+        getStartedMobileBtn.classList.add('d-none');
+      }
 
       var allGetStarted = document.querySelectorAll('.get-started-btn');
-      allGetStarted.forEach(function(btn) { btn.classList.add('d-none'); });
+      allGetStarted.forEach(function(btn) {
+        btn.style.setProperty('display', 'none', 'important');
+        btn.classList.add('d-none');
+      });
 
-      if (headerName) headerName.textContent = session.name.split(' ')[0];
-      if (portalName) portalName.textContent = session.name;
+      if (headerName && session.name) headerName.textContent = session.name.split(' ')[0];
+      if (portalName && session.name) portalName.textContent = session.name;
       if (portalRole) portalRole.textContent = '✓ Verified ' + (session.role || 'Executive');
-      if (portalAvatar) portalAvatar.textContent = session.name.charAt(0).toUpperCase();
+      if (portalAvatar && session.name) portalAvatar.textContent = session.name.charAt(0).toUpperCase();
     } else {
-      if (loggedOutView) loggedOutView.classList.remove('d-none');
-      if (loggedInView) loggedInView.classList.add('d-none');
-      if (userChip) { userChip.classList.remove('d-flex'); userChip.classList.add('d-none'); }
-      if (getStartedBtn) getStartedBtn.classList.remove('d-none');
-      if (getStartedMobileBtn) getStartedMobileBtn.classList.remove('d-none');
+      if (loggedOutView) loggedOutView.style.setProperty('display', 'block', 'important');
+      if (loggedInView) loggedInView.style.setProperty('display', 'none', 'important');
+      if (userChip) {
+        userChip.style.setProperty('display', 'none', 'important');
+        userChip.classList.add('d-none');
+      }
+      if (getStartedBtn) {
+        getStartedBtn.style.removeProperty('display');
+        getStartedBtn.classList.remove('d-none');
+      }
+      if (getStartedMobileBtn) {
+        getStartedMobileBtn.style.removeProperty('display');
+        getStartedMobileBtn.classList.remove('d-none');
+      }
 
       var allGetStarted = document.querySelectorAll('.get-started-btn');
-      allGetStarted.forEach(function(btn) { btn.classList.remove('d-none'); });
+      allGetStarted.forEach(function(btn) {
+        btn.style.removeProperty('display');
+        btn.classList.remove('d-none');
+      });
     }
   };
 
