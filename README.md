@@ -65,7 +65,7 @@ cd c:\Users\Rida\Desktop\DAFBPUBCT
 
 ### 2. Run Database Migrations
 ```bash
-cd backend\django_auth
+cd backend
 python manage.py migrate
 ```
 

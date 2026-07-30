@@ -364,7 +364,7 @@ def auth_register(request):
 
 
 def index(request):
-    frontend_index = Path(settings.BASE_DIR).parent.parent / 'frontend' / 'index.html'
+    frontend_index = Path(settings.BASE_DIR).parent / 'frontend' / 'index.html'
     try:
         content = frontend_index.read_text(encoding='utf-8')
         return HttpResponse(content, content_type='text/html')

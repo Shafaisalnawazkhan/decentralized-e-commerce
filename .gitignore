@@ -1,10 +1,56 @@
-.venv/
-venv/
+# Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.log
-.DS_Store
-.env
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Databases
 *.sqlite3
+
+# Logs and databases
+*.log
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Environment variables
+.env
+.env.*
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+
+# Generated files
+structure.txt

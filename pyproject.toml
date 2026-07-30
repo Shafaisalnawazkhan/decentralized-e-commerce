@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dafbpubct"
+version = "1.0.0"
+description = "Decentralized Authentication for Branded Products using Blockchain Technology"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "Django>=4.2",
+    "requests>=2.28",
+    "djangorestframework>=3.14",
+    "gunicorn>=21.2.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend"]

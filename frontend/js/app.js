@@ -449,6 +449,18 @@
     var activeNav = document.getElementById('nav-' + pageId);
     if (activeNav) activeNav.classList.add('active');
 
+    // Sync mobile bottom bar active state
+    var bottomTabs = document.querySelectorAll('.mobile-bottom-tab');
+    bottomTabs.forEach(function(tab) {
+      tab.classList.toggle('active', tab.getAttribute('data-page') === pageId);
+    });
+
+    // Sync mobile drawer active state
+    var drawerLinks = document.querySelectorAll('.mobile-nav-link');
+    drawerLinks.forEach(function(link) {
+      link.classList.toggle('active', link.getAttribute('data-page') === pageId);
+    });
+
     try {
       if (window.location.hash !== '#' + pageId) {
         history.replaceState(null, null, '#' + pageId);
@@ -2253,6 +2265,23 @@
         window.navigateToPage('home');
       }
     }
+
+    // ─── Mobile Navigation Drawer Toggle ───────────────────────────
+    window.toggleMobileNav = function() {
+      var drawer = document.getElementById('mobileNavDrawer');
+      var overlay = document.getElementById('mobileNavOverlay');
+      if (!drawer || !overlay) return;
+      var isOpen = drawer.classList.contains('open');
+      if (isOpen) {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.classList.remove('modal-open');
+      } else {
+        drawer.classList.add('open');
+        overlay.classList.add('open');
+        document.body.classList.add('modal-open');
+      }
+    };
 
     window.addEventListener('hashchange', routeFromHash);
     routeFromHash();

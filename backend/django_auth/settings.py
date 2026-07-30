@@ -31,5 +31,5 @@ DATABASES = {
 STATIC_URL = '/static/'
 from pathlib import Path as _Path
 STATICFILES_DIRS = [
-    _Path(BASE_DIR).parent.parent / 'frontend'
+    _Path(BASE_DIR).parent / 'frontend'
 ]

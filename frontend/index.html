@@ -80,8 +80,13 @@
             </div>
 
             <!-- Get Started Button -->
-            <button id="getStartedHeaderBtn" class="btn-verix-primary" onclick="openAuthModal('login')">
+            <button id="getStartedHeaderBtn" class="btn-verix-primary d-none d-sm-inline-flex" onclick="openAuthModal('login')">
               Get Started <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+
+            <!-- Mobile Hamburger Menu Button -->
+            <button class="btn-mobile-hamburger d-lg-none" onclick="toggleMobileNav()" aria-label="Menu">
+              <i class="bi bi-list"></i>
             </button>
           </div>
         </div>
@@ -882,6 +887,69 @@
         </div>
       </div>
     </div>
+
+    <!-- ─── MOBILE NAVIGATION DRAWER ──────────────────────────────── -->
+    <div id="mobileNavOverlay" class="mobile-nav-overlay" onclick="toggleMobileNav()"></div>
+    <nav id="mobileNavDrawer" class="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <div class="d-flex align-items-center gap-2">
+          <div class="brand-icon-box" style="width:36px; height:36px; font-size:1rem;"><i class="bi bi-shield-lock-fill"></i></div>
+          <span class="font-display fw-bold text-dark fs-5">Verix</span>
+        </div>
+        <button class="mobile-nav-close-btn" onclick="toggleMobileNav()" aria-label="Close menu">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="mobile-nav-links">
+        <a onclick="navigateToPage('home'); toggleMobileNav();" class="mobile-nav-link active" data-page="home">
+          <i class="bi bi-house-door-fill"></i> Home
+        </a>
+        <a onclick="navigateToPage('categories'); toggleMobileNav();" class="mobile-nav-link" data-page="categories">
+          <i class="bi bi-grid-fill"></i> Categories
+        </a>
+        <a onclick="navigateToPage('verify'); toggleMobileNav();" class="mobile-nav-link" data-page="verify">
+          <i class="bi bi-shield-check"></i> Verification
+        </a>
+        <a onclick="navigateToPage('portal'); toggleMobileNav();" class="mobile-nav-link" data-page="portal">
+          <i class="bi bi-columns-gap"></i> Portal
+        </a>
+        <a onclick="navigateToPage('reviews'); toggleMobileNav();" class="mobile-nav-link" data-page="reviews">
+          <i class="bi bi-star-fill"></i> Reviews
+        </a>
+        <a onclick="navigateToPage('orders'); toggleMobileNav();" class="mobile-nav-link" data-page="orders">
+          <i class="bi bi-truck"></i> My Orders
+        </a>
+      </div>
+      <div class="mobile-nav-footer">
+        <button onclick="openAuthModal('login'); toggleMobileNav();" class="btn-verix-primary w-100 justify-content-center">
+          Get Started <i class="bi bi-arrow-right ms-1"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ─── MOBILE BOTTOM NAVIGATION BAR ─────────────────────────── -->
+    <nav id="mobileBottomBar" class="mobile-bottom-bar d-lg-none">
+      <a onclick="navigateToPage('home')" class="mobile-bottom-tab active" data-page="home">
+        <i class="bi bi-house-door-fill"></i>
+        <span>Home</span>
+      </a>
+      <a onclick="navigateToPage('categories')" class="mobile-bottom-tab" data-page="categories">
+        <i class="bi bi-grid-fill"></i>
+        <span>Categories</span>
+      </a>
+      <a onclick="navigateToPage('verify')" class="mobile-bottom-tab" data-page="verify">
+        <i class="bi bi-shield-check"></i>
+        <span>Verify</span>
+      </a>
+      <a onclick="navigateToPage('portal')" class="mobile-bottom-tab" data-page="portal">
+        <i class="bi bi-columns-gap"></i>
+        <span>Portal</span>
+      </a>
+      <a onclick="navigateToPage('reviews')" class="mobile-bottom-tab" data-page="reviews">
+        <i class="bi bi-star-fill"></i>
+        <span>Reviews</span>
+      </a>
+    </nav>
 
     <!-- Toast Container -->
     <div id="toastContainer"></div>
