@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verix — Next-Generation E-Commerce & Blockchain Product Verification</title>
+    <meta name="description" content="Verix is a next-generation blockchain-powered product verification & luxury e-commerce platform. Authenticate watches, men's wear, women's wear, kids' wear, luxury bags, artisan perfumes, and cosmetics.">
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Verix Design System -->
+    <link rel="stylesheet" href="css/advanced-taiwan.css">
+    <link rel="stylesheet" href="/static/css/advanced-taiwan.css">
+  </head>
+  <body>
+
+    <!-- ─── 1. NAVIGATION BAR ────────────────────────────────────────── -->
+    <header class="site-header">
+      <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+          <!-- Logo -->
+          <a href="#" onclick="navigateToPage('home')" class="brand-logo">
+            <div class="brand-icon-box"><i class="bi bi-shield-lock-fill"></i></div>
+            <div>
+              <span class="brand-title">Verix</span>
+              <span class="brand-tagline-sm">Product Protocol</span>
+            </div>
+          </a>
+
+          <!-- Search Capsule (Flipkart style) -->
+          <div class="header-search-bar d-none d-md-flex">
+            <i class="bi bi-search"></i>
+            <input type="text" id="navSearchInput" placeholder="Search products, brands, serials..." autocomplete="off">
+          </div>
+
+          <!-- Desktop Navigation Links -->
+          <div class="nav-links d-none d-lg-flex align-items-center gap-1">
+            <a onclick="navigateToPage('home')" id="nav-home" class="nav-item-link active">Home</a>
+            <a onclick="navigateToPage('categories')" id="nav-categories" class="nav-item-link">Categories</a>
+            <a onclick="navigateToPage('verify')" id="nav-verify" class="nav-item-link">Verification</a>
+            <a onclick="navigateToPage('portal')" id="nav-portal" class="nav-item-link">Portal</a>
+            <a onclick="navigateToPage('reviews')" id="nav-reviews" class="nav-item-link">Reviews</a>
+          </div>
+
+          <!-- Actions: Currency, Orders Icon, Cart & Auth Button -->
+          <div class="d-flex align-items-center gap-2 gap-md-3">
+            <!-- Multi-Currency Selector Dropdown -->
+            <div class="currency-selector-wrap" title="Select Currency">
+              <i class="bi bi-globe2 text-teal small ms-1"></i>
+              <select id="currencySelector" class="currency-select-dropdown" onchange="changeGlobalCurrency(this.value)">
+                <option value="INR">₹ INR</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+                <option value="GBP">£ GBP</option>
+                <option value="AED">AED</option>
+              </select>
+            </div>
+
+            <!-- My Orders & Tracking Icon Button (Icon Symbol like Cart) -->
+            <button class="btn-cart-trigger" onclick="navigateToPage('orders')" title="My Orders & Live Tracking">
+              <i class="bi bi-truck"></i>
+              <span id="ordersBadgeCount" class="cart-badge-count">2</span>
+            </button>
+
+            <!-- Shopping Cart Button -->
+            <button class="btn-cart-trigger" onclick="toggleCartDrawer()" title="Shopping Cart">
+              <i class="bi bi-bag-check"></i>
+              <span id="cartBadgeCount" class="cart-badge-count">0</span>
+            </button>
+
+            <!-- User Chip (Logged In State) -->
+            <div id="headerUserChip" class="d-none align-items-center gap-2">
+              <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 fw-semibold small">
+                <i class="bi bi-person-check-fill me-1"></i> <span id="headerUserName">Collector</span>
+              </span>
+              <button onclick="handleLogout()" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Logout</button>
+            </div>
+
+            <!-- Get Started Button -->
+            <button id="getStartedHeaderBtn" class="btn-verix-primary" onclick="openAuthModal('login')">
+              Get Started <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── 2. HOME PAGE VIEW (HERO + STATS BANNER + TOP BRANDED COLLECTION) ─── -->
+    <div id="page-home">
+      <!-- Hero Banner -->
+      <section class="hero-wrapper">
+        <div class="container">
+          <div class="row align-items-center g-5">
+            <!-- Hero Text -->
+            <div class="col-lg-6">
+              <div class="hero-chip">
+                <i class="bi bi-patch-check-fill"></i> Decentralized Verification Engine
+              </div>
+
+              <h1 class="hero-main-title">
+                Next-Gen Blockchain
+                <span class="text-teal-gradient">Product Authentication</span>
+                Platform
+              </h1>
+
+              <!-- Customer Ratings & Satisfaction Banner -->
+              <div class="trust-rating-box">
+                <div class="star-rating">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </div>
+                <span class="fw-bold text-dark small">4.95 / 5.0</span>
+                <span class="text-muted small">| Over 14,000+ Satisfied Customers</span>
+              </div>
+
+              <p class="hero-description">
+                Verix is a next-generation blockchain-powered product verification & luxury e-commerce platform.
+                Verify luxury watches, men's & women's wear, kids' collections, leather bags, perfumes, and cosmetics with tamper-proof cryptographic proof.
+              </p>
+
+              <!-- Search Capsule -->
+              <div class="search-capsule-box">
+                <input type="text" id="heroSearchInput" placeholder="Enter product serial # (e.g. SWISS-7701)..." autocomplete="off">
+                <button onclick="handleHeroSearch()">Verify Code</button>
+              </div>
+
+              <!-- Sample Pills -->
+              <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="small text-muted fw-semibold me-1">Try Sample Tags:</span>
+                <button onclick="verifyProduct('SWISS-7701')" class="sample-pill-btn">SWISS-7701 (Watch)</button>
+                <button onclick="verifyProduct('MEN-1020')" class="sample-pill-btn">MEN-1020 (Suit)</button>
+                <button onclick="verifyProduct('WOMEN-4050')" class="sample-pill-btn">WOMEN-4050 (Gown)</button>
+                <button onclick="verifyProduct('BAG-8821')" class="sample-pill-btn">BAG-8821 (Tote)</button>
+                <button onclick="verifyProduct('FAKE-9900')" class="sample-pill-btn sample-pill-danger">FAKE-9900</button>
+              </div>
+            </div>
+
+            <!-- Hero Image Slider -->
+            <div class="col-lg-6">
+              <div class="hero-slider-wrap">
+                <div class="hero-slide-item active">
+                  <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Swiss Timepiece">
+                  <div class="slide-caption-overlay">
+                    <span class="slide-serial-tag">SWISS-7701</span>
+                    <h3 class="h4 font-display fw-bold mb-1">Aetheria Geneva Tourbillon</h3>
+                    <p class="small text-white-50 mb-0">Geneva, Switzerland • $2,850 • ★ 4.9</p>
+                  </div>
+                </div>
+                <div class="hero-slide-item">
+                  <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=800&q=80" alt="Men's Tailored Suit">
+                  <div class="slide-caption-overlay">
+                    <span class="slide-serial-tag">MEN-1020</span>
+                    <h3 class="h4 font-display fw-bold mb-1">Bespoke Italian Blazer</h3>
+                    <p class="small text-white-50 mb-0">Milan, Italy • $1,450 • ★ 4.85</p>
+                  </div>
+                </div>
+                <div class="hero-slide-item">
+                  <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80" alt="Haute Leather Tote">
+                  <div class="slide-caption-overlay">
+                    <span class="slide-serial-tag">BAG-8821</span>
+                    <h3 class="h4 font-display fw-bold mb-1">Velour Le Grand Leather Tote</h3>
+                    <p class="small text-white-50 mb-0">Paris, France • $2,100 • ★ 4.95</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Banner (Home Page Only) -->
+      <section class="stats-banner">
+        <div class="container">
+          <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+              <div class="stat-val">128,490+</div>
+              <div class="stat-lbl">Authenticated Products</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-val">$1.2 Billion</div>
+              <div class="stat-lbl">Protected Inventory</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-val">14,200+</div>
+              <div class="stat-lbl">Satisfied Customers</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="stat-val">99.98%</div>
+              <div class="stat-lbl">Fraud Detection Rate</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Top Branded Collection (Home Page Only) -->
+      <section class="section-wrapper bg-white border-bottom">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-pill-tag">FLIPKART STYLE FEATURED</span>
+            <h2 class="display-6 font-display fw-bold text-dark mb-2">Top Branded Collection</h2>
+            <p class="text-secondary mb-0">Curated showcase of top-rated luxury products with cryptographic authentication.</p>
+          </div>
+
+          <div class="row g-4" id="featuredHomeGrid">
+            <!-- Dynamically populated top 6 featured products -->
+          </div>
+
+          <div class="text-center mt-5">
+            <button onclick="navigateToPage('categories')" class="btn-verix-primary px-5 py-3 fs-6">
+              View All 49 Category Products <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─── 5. CATEGORIES SECTION (49 EXPANDED PRODUCTS) ────────────── -->
+    <section id="page-categories" class="section-wrapper d-none">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-pill-tag">FULL MARKETPLACE CATALOG</span>
+          <h2 class="display-6 font-display fw-bold text-dark mb-2">Explore Product Categories</h2>
+          <p class="text-secondary mb-0">Discover authentic luxury goods across 7 protected categories (7 products per category).</p>
+        </div>
+
+        <!-- 7 Category Filter Pills with Live Count Badges -->
+        <div class="category-filter-bar">
+          <button onclick="filterCategory('all')" id="cat-pill-all" class="cat-filter-pill active">
+            All Products <span id="cat-count-all" class="cat-count-badge">49</span>
+          </button>
+          <button onclick="filterCategory('watches')" id="cat-pill-watches" class="cat-filter-pill">
+            1. Watches <span id="cat-count-watches" class="cat-count-badge">7</span>
+          </button>
+          <button onclick="filterCategory('men')" id="cat-pill-men" class="cat-filter-pill">
+            2. Men's Wear <span id="cat-count-men" class="cat-count-badge">7</span>
+          </button>
+          <button onclick="filterCategory('women')" id="cat-pill-women" class="cat-filter-pill">
+            3. Women's Wear <span id="cat-count-women" class="cat-count-badge">7</span>
+          </button>
+          <button onclick="filterCategory('kids')" id="cat-pill-kids" class="cat-filter-pill">
+            4. Kids' Wear <span id="cat-count-kids" class="cat-count-badge">7</span>
+          </button>
+          <button onclick="filterCategory('bags')" id="cat-pill-bags" class="cat-filter-pill">
+            5. Bags <span id="cat-count-bags" class="cat-count-badge">7</span>
+          </button>
+          <button onclick="filterCategory('perfumes')" id="cat-pill-perfumes" class="cat-filter-pill">
+            6. Perfumes <span id="cat-count-perfumes" class="cat-count-badge">7</span>
+          </button>
+          <button onclick="filterCategory('cosmetics')" id="cat-pill-cosmetics" class="cat-filter-pill">
+            7. Cosmetics <span id="cat-count-cosmetics" class="cat-count-badge">7</span>
+          </button>
+        </div>
+
+        <!-- Product Grid (49 Items dynamically rendered from app.js) -->
+        <div class="row g-4" id="productsGrid">
+          <!-- 49 Product items rendered dynamically via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 6. VERIFICATION CONSOLE SECTION ──────────────────────────── -->
+    <section id="page-verify" class="section-wrapper bg-white border-top border-bottom d-none">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-5">
+            <span class="section-pill-tag">LIVE LEDGER AUDIT</span>
+            <h2 class="display-6 font-display fw-bold text-dark mb-3">Instant Cryptographic Product Verification</h2>
+            <p class="text-secondary mb-4">
+              Enter any brand serial number or NFC token ID below to query smart contract state and retrieve authentic provenance proof.
+            </p>
+
+            <div class="search-capsule-box mb-3">
+              <input type="text" id="verifyConsoleInput" placeholder="Enter serial code (e.g. SWISS-7701)">
+              <button onclick="verifyProductFromConsole()">Verify Code</button>
+            </div>
+
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+              <span class="small text-muted fw-semibold">Samples:</span>
+              <button onclick="verifyProduct('SWISS-7701')" class="sample-pill-btn">SWISS-7701</button>
+              <button onclick="verifyProduct('MEN-1020')" class="sample-pill-btn">MEN-1020</button>
+              <button onclick="verifyProduct('BAG-8821')" class="sample-pill-btn">BAG-8821</button>
+              <button onclick="verifyProduct('FAKE-9900')" class="sample-pill-btn sample-pill-danger">FAKE-9900</button>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div id="verificationResultBox" class="verification-card-box">
+              <div class="text-center w-100 py-4">
+                <i class="bi bi-shield-check display-3 text-muted opacity-50 mb-3 d-block"></i>
+                <h4 class="font-display fw-bold text-dark mb-2">Awaiting Verification Query</h4>
+                <p class="text-muted small max-w-md mx-auto mb-0">
+                  Enter a valid serial code or click one of the sample tags above to retrieve instant cryptographic proof.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 7. PORTAL & ANALYTICS DASHBOARD SECTION ──────────────────── -->
+    <section id="page-portal" class="section-wrapper d-none">
+      <div class="container">
+        <!-- Logged-Out View -->
+        <div id="portalLoggedOutView" class="text-center max-w-md mx-auto py-5">
+          <div class="brand-icon-box mx-auto mb-3" style="width:60px; height:60px; font-size:1.8rem;">
+            <i class="bi bi-lock-fill"></i>
+          </div>
+          <h2 class="font-display fw-bold text-dark mb-2">Verix Executive & Collector Portal</h2>
+          <p class="text-secondary mb-4">Sign in or create an official account to access registered asset management, live network analytics, and cryptographic provenance certificates.</p>
+          <button onclick="openAuthModal('login')" class="btn-verix-emerald px-5 py-3 fs-6">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Launch Portal
+          </button>
+        </div>
+
+        <!-- Logged-In View -->
+        <div id="portalLoggedInView" class="portal-wrapper d-none">
+          <!-- Header Bar -->
+          <div class="portal-user-header">
+            <div class="d-flex align-items-center gap-3">
+              <div class="portal-avatar-circle" id="portalAvatar">V</div>
+              <div>
+                <h3 class="font-display fw-bold text-dark mb-0" id="portalUserName">Aetheria Collector</h3>
+                <small class="text-emerald fw-semibold" id="portalUserRole"><i class="bi bi-patch-check-fill me-1"></i> Verified Executive</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 fw-semibold me-2 d-none d-md-inline-block">
+                <i class="bi bi-broadcast me-1"></i> Node #1894204
+              </span>
+              <button onclick="openAuthModal('login')" class="btn btn-outline-dark rounded-pill px-3 py-2 small">Switch Account</button>
+              <button onclick="handleLogout()" class="btn btn-dark rounded-pill px-3 py-2 small">Logout</button>
+            </div>
+          </div>
+
+          <!-- 4 Executive Stat Widgets -->
+          <div class="row g-4 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="portal-stat-widget">
+                <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Protected Inventory</span>
+                <strong class="h3 font-display fw-bold text-dark mb-0">$1.28 Billion</strong>
+                <small class="text-success d-block mt-1" style="font-size:0.78rem;"><i class="bi bi-graph-up-arrow me-1"></i> +14.2% YoY</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="portal-stat-widget">
+                <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Verified Assets</span>
+                <strong class="h3 font-display fw-bold text-teal mb-0">128,490 Tags</strong>
+                <small class="text-teal d-block mt-1" style="font-size:0.78rem;"><i class="bi bi-shield-check me-1"></i> 100% Validated</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="portal-stat-widget">
+                <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Fraud Blocked</span>
+                <strong class="h3 font-display fw-bold text-danger mb-0">4,380 Replicas</strong>
+                <small class="text-danger d-block mt-1" style="font-size:0.78rem;"><i class="bi bi-shield-x me-1"></i> 99.98% Deflected</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="portal-stat-widget">
+                <span class="text-muted small fw-semibold text-uppercase d-block mb-1">Live Network TPS</span>
+                <strong class="h3 font-display fw-bold text-emerald mb-0" id="liveTpsValDisplay">4,250 TPS</strong>
+                <small class="text-emerald d-block mt-1" style="font-size:0.78rem;"><i class="bi bi-activity me-1"></i> Real-time Ticker</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Interactive Analytics Charts -->
+          <div class="row g-4 mb-4">
+            <!-- Chart 1: Category Distribution -->
+            <div class="col-lg-4">
+              <div class="p-4 bg-white rounded-4 border shadow-sm h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Asset Distribution</h4>
+                  <span class="badge bg-light text-muted rounded-pill px-2 py-1 small">Category Share</span>
+                </div>
+                <div style="position:relative; height:240px;">
+                  <canvas id="categoryPieChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart 2: Monthly Authentications Volume -->
+            <div class="col-lg-4">
+              <div class="p-4 bg-white rounded-4 border shadow-sm h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Monthly Verifications</h4>
+                  <span class="badge bg-light text-teal rounded-pill px-2 py-1 small">+28% Growth</span>
+                </div>
+                <div style="position:relative; height:240px;">
+                  <canvas id="monthlyBarChart"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart 3: Live Network TPS -->
+            <div class="col-lg-4">
+              <div class="p-4 bg-white rounded-4 border shadow-sm h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Network Throughput</h4>
+                  <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1 small"><i class="bi bi-dot"></i> Live Stream</span>
+                </div>
+                <div style="position:relative; height:240px;">
+                  <canvas id="liveTpsLineChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Portfolio Assets Table -->
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="font-display fw-bold text-dark mb-0">Registered Luxury Portfolio Assets</h4>
+            <div class="d-flex gap-2">
+              <button onclick="printPaymentReceipt()" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                <i class="bi bi-printer me-1"></i> Print Statement
+              </button>
+              <button onclick="downloadPaymentStatementPDF()" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                <i class="bi bi-download me-1"></i> Export PDF Statement
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="portal-table">
+              <thead>
+                <tr>
+                  <th>Serial ID</th>
+                  <th>Luxury Asset</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Ledger Hash</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="text-dark">SWISS-7701</strong></td>
+                  <td>Tourbillon Calibre No. 1</td>
+                  <td>Watches</td>
+                  <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1">✓ Authentic</span></td>
+                  <td><code class="small text-teal">0x8F9a3B...7F8a</code></td>
+                  <td>
+                    <button onclick="verifyProduct('SWISS-7701')" class="btn btn-sm btn-outline-dark rounded-pill me-1">Audit</button>
+                    <button onclick="printPaymentReceipt()" class="btn btn-sm btn-outline-secondary rounded-pill me-1" title="Print Statement"><i class="bi bi-printer"></i></button>
+                    <button onclick="downloadPaymentStatementPDF()" class="btn btn-sm btn-outline-dark rounded-pill" title="Download PDF Invoice"><i class="bi bi-download"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">MEN-1020</strong></td>
+                  <td>Bespoke Wool Blazer</td>
+                  <td>Men's Wear</td>
+                  <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1">✓ Authentic</span></td>
+                  <td><code class="small text-teal">0x1A2b3C...9A0b</code></td>
+                  <td>
+                    <button onclick="verifyProduct('MEN-1020')" class="btn btn-sm btn-outline-dark rounded-pill me-1">Audit</button>
+                    <button onclick="printPaymentReceipt()" class="btn btn-sm btn-outline-secondary rounded-pill me-1" title="Print Statement"><i class="bi bi-printer"></i></button>
+                    <button onclick="downloadPaymentStatementPDF()" class="btn btn-sm btn-outline-dark rounded-pill" title="Download PDF Invoice"><i class="bi bi-download"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong class="text-dark">BAG-8821</strong></td>
+                  <td>Le Grand Leather Tote</td>
+                  <td>Bags</td>
+                  <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1">✓ Authentic</span></td>
+                  <td><code class="small text-teal">0x3C4d5E...1C2d</code></td>
+                  <td>
+                    <button onclick="verifyProduct('BAG-8821')" class="btn btn-sm btn-outline-dark rounded-pill me-1">Audit</button>
+                    <button onclick="printPaymentReceipt()" class="btn btn-sm btn-outline-secondary rounded-pill me-1" title="Print Statement"><i class="bi bi-printer"></i></button>
+                    <button onclick="downloadPaymentStatementPDF()" class="btn btn-sm btn-outline-dark rounded-pill" title="Download PDF Invoice"><i class="bi bi-download"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 8. REVIEWS SECTION (CURATED TESTIMONIALS & REVIEW FORM) ──── -->
+    <section id="page-reviews" class="section-wrapper bg-white border-top d-none">
+      <div class="container">
+        <div class="section-head text-center max-w-lg mx-auto mb-5">
+          <span class="section-pill-tag">VERIFIED REVIEWS & TESTIMONIALS</span>
+          <h2 class="display-6 font-display fw-bold text-dark mb-2">Global Collector & Brand Partner Satisfaction</h2>
+          <p class="text-secondary mb-0">Securing luxury authenticity across horology, haute couture, leatherware, perfumes, and cosmetics with 99.9% verified satisfaction.</p>
+        </div>
+
+        <!-- 6 Testimonial Cards Grid -->
+        <div class="row g-4 mb-5">
+          <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 border h-100 shadow-sm">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="brand-icon-box bg-dark text-warning" style="width:46px; height:46px; font-size:1.1rem;">AG</div>
+                <div>
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Aetheria Geneva</h4>
+                  <small class="text-emerald fw-semibold"><i class="bi bi-patch-check-fill me-1"></i> Swiss Watch Guild</small>
+                </div>
+              </div>
+              <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="text-secondary small mb-0">"Verix eliminated counterfeit replicas for our Chrono Tourbillon series. Our global watch collectors verify authenticity in seconds via NFC tags."</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 border h-100 shadow-sm">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="brand-icon-box bg-teal text-white" style="width:46px; height:46px; font-size:1.1rem; background:#0F766E;">VA</div>
+                <div>
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Velour Atelier</h4>
+                  <small class="text-emerald fw-semibold"><i class="bi bi-patch-check-fill me-1"></i> Paris Haute Couture</small>
+                </div>
+              </div>
+              <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="text-secondary small mb-0">"The NFC tag micro-stamping combined with zero-knowledge smart contract audits gives our buyers complete confidence across Europe and Asia."</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 border h-100 shadow-sm">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="brand-icon-box bg-emerald text-white" style="width:46px; height:46px; font-size:1.1rem; background:#10B981;">LR</div>
+                <div>
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">L'Elixir Rare</h4>
+                  <small class="text-emerald fw-semibold"><i class="bi bi-patch-check-fill me-1"></i> Grasse Distillation House</small>
+                </div>
+              </div>
+              <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div>
+              <p class="text-secondary small mb-0">"Tracing vintage perfume harvest batches from Grasse botanicals to customer hands has transformed secondary market credibility."</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 border h-100 shadow-sm">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="brand-icon-box bg-warning text-dark" style="width:46px; height:46px; font-size:1.1rem;">MC</div>
+                <div>
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Maison Cuir</h4>
+                  <small class="text-emerald fw-semibold"><i class="bi bi-patch-check-fill me-1"></i> Milan Leatherworks</small>
+                </div>
+              </div>
+              <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="text-secondary small mb-0">"Our crocodile embossed handbags are now backed by immutable blockchain proof. Theft and fake resales are now virtually impossible."</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 border h-100 shadow-sm">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="brand-icon-box bg-info text-white" style="width:46px; height:46px; font-size:1.1rem;">SB</div>
+                <div>
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Sovereign Botanicals</h4>
+                  <small class="text-emerald fw-semibold"><i class="bi bi-patch-check-fill me-1"></i> Bio-Cosmetics Lab</small>
+                </div>
+              </div>
+              <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="text-secondary small mb-0">"Verix provides full clinical batch provenance for our luxury skincare line. Customers love scanning the tag before application."</p>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="p-4 bg-light rounded-4 border h-100 shadow-sm">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="brand-icon-box bg-danger text-white" style="width:46px; height:46px; font-size:1.1rem;">JA</div>
+                <div>
+                  <h4 class="h6 font-display fw-bold text-dark mb-0">Junior Artisan</h4>
+                  <small class="text-emerald fw-semibold"><i class="bi bi-patch-check-fill me-1"></i> Royal Kids Wear</small>
+                </div>
+              </div>
+              <div class="text-warning mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <p class="text-secondary small mb-0">"Organic GOTS fabric certification micro-stamped right into the garment tag gives parents total peace of mind."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Review Submission Box -->
+        <div class="row align-items-center g-4 p-4 p-md-5 bg-light rounded-4 border shadow-sm">
+          <div class="col-lg-6">
+            <span class="badge bg-teal bg-opacity-10 text-teal rounded-pill px-3 py-2 fw-semibold mb-2" style="color:#0F766E;">LEAVE YOUR FEEDBACK</span>
+            <h3 class="font-display fw-bold text-dark mb-2">Are you a Verified Collector or Brand Executive?</h3>
+            <p class="text-secondary mb-0">Share your verification experience with the Verix Protocol community. Submitted reviews earn cryptographic feedback badges.</p>
+          </div>
+          <div class="col-lg-6">
+            <form id="reviewSubmissionForm" onsubmit="event.preventDefault(); window.submitReviewForm();">
+              <div class="row g-2 mb-2">
+                <div class="col-6">
+                  <input id="reviewAuthorInput" type="text" class="verix-form-input mb-0" placeholder="Your Name or Brand" required>
+                </div>
+                <div class="col-6">
+                  <select id="reviewRatingSelect" class="form-select rounded-pill px-3 py-2 border text-secondary">
+                    <option value="5">★★★★★ (5/5 Stars)</option>
+                    <option value="4">★★★★☆ (4/5 Stars)</option>
+                    <option value="3">★★★☆☆ (3/5 Stars)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-3">
+                <textarea id="reviewTextInput" class="verix-form-input mb-0" rows="3" placeholder="Write your testimonial or authentication feedback..." required></textarea>
+              </div>
+              <button type="submit" class="btn-verix-emerald w-100 justify-content-center py-2 fs-6">
+                Submit Verified Review <i class="bi bi-send-fill ms-1"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 8B. ORDERS & ORDER TRACKING SECTION (FLIPKART STYLE) ────── -->
+    <section id="page-orders" class="section-wrapper bg-white border-top d-none">
+      <div class="container">
+        <div class="section-head text-center max-w-lg mx-auto mb-4">
+          <span class="section-pill-tag"><i class="bi bi-truck me-1"></i> FLIPKART STYLE LOGISTICS TRACKER</span>
+          <h2 class="display-6 font-display fw-bold text-dark mb-2">My Orders & Live Delivery Tracking</h2>
+          <p class="text-secondary mb-0">Track real-time shipment status, NFC cryptographic signature, and courier dispatch timeline.</p>
+        </div>
+
+        <!-- Search Capsule -->
+        <div class="search-capsule-box max-w-md mx-auto mb-4">
+          <input type="text" id="orderSearchInput" placeholder="Enter Order ID (e.g. VRX-982104)..." autocomplete="off">
+          <button onclick="handleOrderSearch()"><i class="bi bi-search me-1"></i> Search Order</button>
+        </div>
+
+        <!-- Order Status Filter Pills -->
+        <div class="category-filter-bar justify-content-center mb-4">
+          <button onclick="filterOrders('all')" id="order-filter-all" class="cat-filter-pill active">
+            All Orders <span id="order-count-all" class="cat-count-badge">2</span>
+          </button>
+          <button onclick="filterOrders('In Transit')" id="order-filter-intransit" class="cat-filter-pill">
+            <i class="bi bi-truck me-1"></i> In Transit / Shipped <span id="order-count-intransit" class="cat-count-badge">1</span>
+          </button>
+          <button onclick="filterOrders('Delivered')" id="order-filter-delivered" class="cat-filter-pill">
+            <i class="bi bi-check-circle-fill me-1 text-success"></i> Delivered <span id="order-count-delivered" class="cat-count-badge">1</span>
+          </button>
+        </div>
+
+        <!-- Active Orders Grid -->
+        <div id="ordersListContainer" class="row g-4">
+          <!-- Dynamically populated orders -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── 9. SHOPPING CART DRAWER ─────────────────────────────────── -->
+    <div id="cartDrawerBackdrop" class="cart-drawer-backdrop" onclick="toggleCartDrawer()">
+      <div class="cart-drawer-panel" onclick="event.stopPropagation()">
+        <div class="cart-drawer-header">
+          <h4 class="font-display fw-bold text-dark mb-0"><i class="bi bi-bag-check me-2"></i> Your Shopping Cart</h4>
+          <button class="btn-close" onclick="toggleCartDrawer()" aria-label="Close"></button>
+        </div>
+
+        <div class="cart-drawer-body" id="cartDrawerBody">
+          <!-- Cart Items populated dynamically -->
+        </div>
+
+        <div class="cart-drawer-footer">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="text-muted">Subtotal:</span>
+            <strong class="h4 font-display fw-bold text-dark mb-0" id="cartSubtotalText">$0.00</strong>
+          </div>
+          <button onclick="openPaymentModal()" id="checkoutBtn" class="btn-verix-emerald w-100 justify-content-center py-3" disabled>
+            Proceed to Checkout <i class="bi bi-credit-card ms-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 10. PAYMENT CHECKOUT MODAL (FLIPKART MULTI-METHOD) ──────── -->
+    <div id="verixPaymentModal" class="verix-modal-backdrop-custom" style="display:none;">
+      <div class="verix-modal-content w-100">
+        <!-- Close (X) Cross Mark Button -->
+        <button type="button" class="verix-modal-close-btn" onclick="closePaymentModal()" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div id="paymentModalInnerContent">
+          <div class="text-center mb-4">
+            <div class="brand-icon-box mx-auto mb-2"><i class="bi bi-credit-card-2-front-fill"></i></div>
+            <h3 class="font-display fw-bold text-dark mb-1">Verix Checkout</h3>
+            <p class="text-muted small mb-0">Select your preferred payment method</p>
+          </div>
+
+          <div class="p-3 bg-light rounded-3 mb-3">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="text-muted small">Total Amount Payable:</span>
+              <strong class="text-dark fs-5 font-display fw-bold" id="paymentTotalAmount">$0.00</strong>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="text-muted small">Blockchain NFC Registry & Shipping:</span>
+              <span class="text-success small fw-semibold">Free Express Included</span>
+            </div>
+          </div>
+
+          <!-- Flipkart-style Payment Method Selector -->
+          <div class="payment-methods-grid">
+            <div id="payMethodTab-card" class="pay-method-card active" onclick="switchPaymentTab('card')">
+              <i class="bi bi-credit-card"></i>
+              <span>Card</span>
+            </div>
+            <div id="payMethodTab-upi" class="pay-method-card" onclick="switchPaymentTab('upi')">
+              <i class="bi bi-qr-code-scan"></i>
+              <span>UPI ID</span>
+            </div>
+            <div id="payMethodTab-netbanking" class="pay-method-card" onclick="switchPaymentTab('netbanking')">
+              <i class="bi bi-bank"></i>
+              <span>Net Banking</span>
+            </div>
+            <div id="payMethodTab-cod" class="pay-method-card" onclick="switchPaymentTab('cod')">
+              <i class="bi bi-truck"></i>
+              <span>COD / Wallet</span>
+            </div>
+          </div>
+
+          <form id="paymentForm" onsubmit="event.preventDefault(); processPayment();">
+            <!-- Card Pane -->
+            <div id="payPane-card">
+              <div class="mb-2">
+                <label class="form-label small fw-semibold text-dark mb-1">Cardholder Full Name</label>
+                <input type="text" class="verix-form-input" placeholder="e.g. Aetheria Executive">
+              </div>
+              <div class="mb-2">
+                <label class="form-label small fw-semibold text-dark mb-1">Credit / Debit Card Number</label>
+                <input type="text" id="cardNumInput" class="verix-form-input" placeholder="4532 8891 0293 8812" maxlength="19">
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <input type="text" class="verix-form-input mb-0" placeholder="MM/YY" maxlength="5">
+                </div>
+                <div class="col-6">
+                  <input type="password" class="verix-form-input mb-0" placeholder="CVV" maxlength="4">
+                </div>
+              </div>
+            </div>
+
+            <!-- UPI Pane -->
+            <div id="payPane-upi" class="d-none">
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark mb-1">Enter VPA / UPI ID</label>
+                <input type="text" class="verix-form-input" placeholder="username@upi or 9876543210@paytm">
+              </div>
+              <div class="p-3 bg-light rounded-3 text-center mb-3">
+                <i class="bi bi-qr-code display-6 text-teal mb-2 d-block"></i>
+                <span class="small text-muted">Scan with Google Pay, PhonePe, Paytm, or BHIM</span>
+              </div>
+            </div>
+
+            <!-- Net Banking Pane -->
+            <div id="payPane-netbanking" class="d-none mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Select Bank</label>
+              <select class="form-select rounded-pill px-4 py-2 border">
+                <option>HDFC Bank</option>
+                <option>ICICI Bank</option>
+                <option>State Bank of India</option>
+                <option>Axis Bank</option>
+                <option>Citi / International Bank</option>
+              </select>
+            </div>
+
+            <!-- COD Pane -->
+            <div id="payPane-cod" class="d-none mb-3">
+              <div class="p-3 bg-light rounded-3">
+                <i class="bi bi-check-circle-fill text-success me-1"></i>
+                <span class="small text-dark fw-semibold">Pay Cash or Crypto Wallet on Express Delivery</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Delivery Address & Pincode</label>
+              <input type="text" class="verix-form-input mb-0" placeholder="100 Luxury Way, Suite 400 (Pincode 400001)">
+            </div>
+
+            <button type="button" onclick="processPayment()" class="btn-verix-emerald w-100 justify-content-center py-3">
+              Pay & Mint Blockchain Certificate <i class="bi bi-lock-fill ms-1"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Success Receipt Container -->
+        <div id="paymentSuccessReceipt" class="d-none"></div>
+      </div>
+    </div>
+
+    <!-- ─── 11. AUTHENTICATION MODAL (REGISTRATION & LOGIN + WORKING CLOSE X) ── -->
+    <div id="verixAuthModal" class="verix-modal-backdrop-custom" style="display:none;">
+      <div class="verix-modal-content w-100">
+        <!-- Close (X) Cross Mark Button -->
+        <button type="button" class="verix-modal-close-btn" onclick="closeAuthModal()" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div class="text-center mb-4">
+          <div class="brand-icon-box mx-auto mb-2"><i class="bi bi-shield-lock-fill"></i></div>
+          <h3 class="font-display fw-bold text-dark mb-1">Verix Protocol</h3>
+          <p class="text-muted small mb-0">Access next-generation product verification & portal</p>
+        </div>
+
+        <!-- Sign In / Register Tab Switcher -->
+        <div class="verix-tab-nav">
+          <button id="tabBtnLogin" onclick="switchAuthTab('login')" class="verix-tab-btn active">
+            <i class="bi bi-box-arrow-in-right"></i> Sign In
+          </button>
+          <button id="tabBtnRegister" onclick="switchAuthTab('register')" class="verix-tab-btn">
+            <i class="bi bi-person-plus"></i> Register
+          </button>
+        </div>
+
+        <!-- Sign In Pane -->
+        <div id="paneLogin">
+          <form id="verixLoginForm">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Email Address</label>
+              <input id="loginEmailInput" type="email" class="verix-form-input" placeholder="director@luxurybrand.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Password</label>
+              <input type="password" class="verix-form-input" placeholder="••••••••" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">User Role</label>
+              <select id="loginRoleSelect" class="form-select rounded-pill px-4 py-2 border mb-3">
+                <option value="Collector">Luxury Collector</option>
+                <option value="Director">Brand Director</option>
+                <option value="Verifier">Authorized Verifier</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-verix-emerald w-100 justify-content-center py-3">
+              Sign In & Launch Portal <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Register Pane -->
+        <div id="paneRegister" class="d-none">
+          <form id="verixRegisterForm">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Full Name / Brand Name</label>
+              <input id="registerNameInput" type="text" class="verix-form-input" placeholder="Aetheria Atelier" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Work Email</label>
+              <input id="registerEmailInput" type="email" class="verix-form-input" placeholder="contact@brand.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Create Password</label>
+              <input type="password" class="verix-form-input" placeholder="••••••••" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-dark mb-1">Confirm Password</label>
+              <input type="password" class="verix-form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-verix-emerald w-100 justify-content-center py-3">
+              Create Account & Launch Portal <i class="bi bi-arrow-right ms-1"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 11B. FLIPKART STYLE PRODUCT DETAIL & SIZE SELECTOR MODAL ──── -->
+    <div id="verixProductDetailModal" class="verix-modal-backdrop-custom" style="display:none;">
+      <div class="verix-modal-content product-detail-modal-dialog w-100">
+        <button type="button" class="verix-modal-close-btn" onclick="closeProductDetailModal()" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div id="productDetailInnerContent">
+          <!-- Populated dynamically via JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 11C. FLIPKART STYLE ORDER TRACKING STEPPER MODAL ───────────── -->
+    <div id="verixTrackingModal" class="verix-modal-backdrop-custom" style="display:none;">
+      <div class="verix-modal-content product-detail-modal-dialog w-100">
+        <button type="button" class="verix-modal-close-btn" onclick="closeTrackingModal()" aria-label="Close">
+          <i class="bi bi-x-lg"></i>
+        </button>
+
+        <div id="trackingModalInnerContent">
+          <!-- Populated dynamically via JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
+    <!-- ─── 12. FOOTER ──────────────────────────────────────────────── -->
+    <footer class="verix-footer">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-md-6">
+            <div class="d-flex align-items-center gap-3 mb-2">
+              <div class="brand-icon-box" style="width:36px; height:36px; font-size:1rem;">
+                <i class="bi bi-shield-lock-fill"></i>
+              </div>
+              <span class="font-display fw-bold text-dark fs-5">Verix</span>
+            </div>
+            <p class="text-secondary small mb-0">A next-generation blockchain-powered product verification & e-commerce platform.</p>
+          </div>
+
+          <div class="col-md-6 text-md-end">
+            <div class="d-flex justify-content-md-end gap-3 mb-2">
+              <a onclick="navigateToPage('home')" class="footer-link-item">Home</a>
+              <a onclick="navigateToPage('categories')" class="footer-link-item">Categories</a>
+              <a onclick="navigateToPage('verify')" class="footer-link-item">Verification</a>
+              <a onclick="navigateToPage('portal')" class="footer-link-item">Portal</a>
+              <a onclick="navigateToPage('reviews')" class="footer-link-item">Reviews</a>
+            </div>
+            <div class="text-muted small">© 2026 Verix Protocol. All rights reserved.</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Chart.js Library, Dashboard Charts Engine & Verix Application Controller -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/bootstrap.bundle.min.js"></script>
+    <script src="js/dashboard-charts.js"></script>
+    <script src="/static/js/dashboard-charts.js"></script>
+    <script src="js/app.js"></script>
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>
